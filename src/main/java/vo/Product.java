@@ -1,50 +1,76 @@
 package vo;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Product {
-    private Integer product_id;
-    private Integer user_id;
-    private Integer category_id;
-    private Timestamp created_date;
-    public Integer getProduct_id() {
-		return product_id;
+	private Integer productId;
+	private Integer userId;
+	private Integer categoryId;
+	private Timestamp createdDate;
+	private Timestamp deleteDate;
+	private String title;
+	private Integer status;
+	private String description;
+	private List<String> imageList;
+	private List<ApplicationProduct> applicationList;
+
+	public Product() {
 	}
 
-	public void setProduct_id(Integer product_id) {
-		this.product_id = product_id;
+	public Product(Integer productId, Integer userId, Integer categoryId, Timestamp createdDate, Timestamp deleteDate,
+			String title, Integer status, String description, List<String> imageList,
+			List<ApplicationProduct> applicationList) {
+		this.productId = productId;
+		this.userId = userId;
+		this.categoryId = categoryId;
+		this.createdDate = createdDate;
+		this.deleteDate = deleteDate;
+		this.title = title;
+		this.status = status;
+		this.description = description;
+		this.imageList = imageList;
+		this.applicationList = applicationList;
 	}
 
-	public Integer getUser_id() {
-		return user_id;
+	public Integer getProductId() {
+		return productId;
 	}
 
-	public void setUser_id(Integer user_id) {
-		this.user_id = user_id;
+	public void setProductId(Integer productId) {
+		this.productId = productId;
 	}
 
-	public Integer getCategory_id() {
-		return category_id;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setCategory_id(Integer category_id) {
-		this.category_id = category_id;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
-	public Timestamp getCreated_date() {
-		return created_date;
+	public Integer getCategoryId() {
+		return categoryId;
 	}
 
-	public void setCreated_date(Timestamp created_date) {
-		this.created_date = created_date;
+	public void setCategoryId(Integer categoryId) {
+		this.categoryId = categoryId;
 	}
 
-	public Timestamp getDelete_date() {
-		return delete_date;
+	public Timestamp getCreatedDate() {
+		return createdDate;
 	}
 
-	public void setDelete_date(Timestamp delete_date) {
-		this.delete_date = delete_date;
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Timestamp getDeleteDate() {
+		return deleteDate;
+	}
+
+	public void setDeleteDate(Timestamp deleteDate) {
+		this.deleteDate = deleteDate;
 	}
 
 	public String getTitle() {
@@ -71,23 +97,20 @@ public class Product {
 		this.description = description;
 	}
 
-	private Timestamp delete_date;
-    private String title;
-    private Integer status;
-    private String description;
+	public List<String> getImageList() {
+		return imageList;
+	}
 
-    public Product() {
-    }
+	public void setImageList(List<String> imageList) {
+		this.imageList = imageList;
+	}
 
-    public Product(Integer product_id, Integer user_id, Integer category_id, Timestamp created_date,
-                      Timestamp delete_date, String title, Integer status, String description) {
-        this.product_id = product_id;
-        this.user_id = user_id;
-        this.category_id = category_id;
-        this.created_date = created_date;
-        this.delete_date = delete_date;
-        this.title = title;
-        this.status = status;
-        this.description = description;
-    }
+	public List<ApplicationProduct> getApplicationList() {
+		return applicationList;
+	}
+
+	public void setApplicationList(List<ApplicationProduct> applicationList) {
+		this.applicationList = applicationList;
+	}
+
 }
