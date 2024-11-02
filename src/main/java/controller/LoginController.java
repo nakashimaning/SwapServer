@@ -24,11 +24,16 @@ public class LoginController extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Handle login
-        String identifier = request.getParameter("identifier"); // username or email
-        String password = request.getParameter("password");
+//        String identifier = request.getParameter("identifier"); // username or email
+    	String email = request.getParameter("email");
+    	String username = request.getParameter("username");
+    	String identifier = (email != null) ? email : username;
+    	String password = request.getParameter("password");
 
         try {
             User user = userService.login(identifier, password);
+
+
             // Store user in session
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
