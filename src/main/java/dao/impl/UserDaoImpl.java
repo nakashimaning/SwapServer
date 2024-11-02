@@ -1,5 +1,4 @@
 package dao.impl;
-
 import dao.UserDao;
 import vo.User;
 
@@ -7,13 +6,17 @@ import java.sql.*;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import common.ServiceLocator;
+
 public class UserDaoImpl implements UserDao {
 
 	private DataSource dataSource;
 
 	public UserDaoImpl() throws Exception {
 		try {
-			dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/demo");
+//			dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/swapapp");
+			dataSource = ServiceLocator.getInstance().getDataSource();
+
 		} catch (Exception e) {
 			throw new Exception("Error initializing DataSource", e);
 		}
@@ -22,7 +25,7 @@ public class UserDaoImpl implements UserDao {
 	// Add user into the database
 	@Override
 	public int addUser(User user) throws Exception {
-		String sql = "INSERT INTO users (username, email, password, profile_pic, "
+		String sql = "INSERT INTO User (username, email, password, profile_pic, "
 				+ "asseek_totalstarcount, asprovider_totalstarcount, "
 				+ "asseek_totalreviewcount, asprovider_totalreviewcount, FCM_token) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -47,7 +50,7 @@ public class UserDaoImpl implements UserDao {
 	// Search user by user ID
 	@Override
 	public User searchUserById(Integer userId) throws Exception {
-		String sql = "SELECT * FROM users WHERE user_id = ?";
+		String sql = "SELECT * FROM User WHERE user_id = ?";
 		try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			pstmt.setInt(1, userId);
@@ -67,7 +70,7 @@ public class UserDaoImpl implements UserDao {
 	// Search user by email
 	@Override
 	public User searchUserByEmail(String email) throws Exception {
-		String sql = "SELECT * FROM users WHERE email = ?";
+		String sql = "select * from User where email = ?";
 		try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			pstmt.setString(1, email);
@@ -83,11 +86,30 @@ public class UserDaoImpl implements UserDao {
 			throw new Exception("Error searching user by email", e);
 		}
 	}
+    // Search user by username
+    @Override
+    public User searchUserByUsername(String username) throws Exception {
+        String sql = "SELECT * FROM User WHERE username = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+            pstmt.setString(1, username);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRowToUser(rs);
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error searching user by username", e);
+        }
+    }
 	// Delete user by user ID
 	@Override
 	public int deleteUserById(Integer userId) throws Exception {
-		String sql = "DELETE FROM users WHERE user_id = ?";
+		String sql = "DELETE FROM User WHERE user_id = ?";
 		try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			pstmt.setInt(1, userId);
@@ -101,7 +123,7 @@ public class UserDaoImpl implements UserDao {
 	// Delete user by email
 	@Override
 	public int deleteUserByEmail(String email) throws Exception {
-		String sql = "DELETE FROM users WHERE email = ?";
+		String sql = "DELETE FROM User WHERE email = ?";
 		try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			pstmt.setString(1, email);
@@ -115,7 +137,7 @@ public class UserDaoImpl implements UserDao {
 	// Update user by user ID
 	@Override
 	public int updateUserById(User user) throws Exception {
-		String sql = "UPDATE users SET username = ?, email = ?, password = ?, profile_pic = ?, "
+		String sql = "UPDATE User SET username = ?, email = ?, password = ?, profile_pic = ?, "
 				+ "asseek_totalstarcount = ?, asprovider_totalstarcount = ?, "
 				+ "asseek_totalreviewcount = ?, asprovider_totalreviewcount = ?, FCM_token = ? " + "WHERE user_id = ?";
 		try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -140,7 +162,7 @@ public class UserDaoImpl implements UserDao {
 	// Update user by email
 	@Override
 	public int updateUserByEmail(User user) throws Exception {
-		String sql = "UPDATE users SET username = ?, password = ?, profile_pic = ?, "
+		String sql = "UPDATE User SET username = ?, password = ?, profile_pic = ?, "
 				+ "asseek_totalstarcount = ?, asprovider_totalstarcount = ?, "
 				+ "asseek_totalreviewcount = ?, asprovider_totalreviewcount = ?, FCM_token = ? " + "WHERE email = ?";
 		try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {

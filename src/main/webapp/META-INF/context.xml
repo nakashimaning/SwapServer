@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context>
-
-<Resource name="jdbc/Swap" type="javax.sql.DataSource"
-driverClassName="com.mysql.cj.jdbc.Driver"
-jdbcUrl="jdbc:mysql://localhost:3306/Swap"
-username="joyce2000555"
-password="L6k4iPncYpCp4b4GseYL3u"
-factory="com.zaxxer.hikari.HikariJNDIFactory"
-dataSource.cachePrepStmts="true"
-dataSource.prepStmtCacheSize="250"
-dataSource.prepStmtCacheSqlLimit="2048"
-/>
-
+<Context docBase="Book_MySQL_Web" path="/Book_MySQL_Web"
+	reloadable="true">
+	
+	<Resource name="jdbc/swapapp" 
+		auth="Container"
+		type="javax.sql.DataSource" 
+		driverClassName="com.mysql.cj.jdbc.Driver"
+		url="jdbc:mysql://swap.cometiba.me:3306/swapapp?useUnicode=yes&amp;characterEncoding=utf8&amp;useSSL=true&amp;serverTimezone=Asia/Taipei" 
+		username="will"
+		password="ciwdenfijLIUeihufgojwi" 
+		maxTotal="20" 
+		maxIdle="10" 
+		maxWaitMillis="5000"/>
 </Context>

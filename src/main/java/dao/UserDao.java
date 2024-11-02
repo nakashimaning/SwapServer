@@ -14,6 +14,7 @@ public interface UserDao {
     // Search user by email
     User searchUserByEmail(String email) throws Exception;
 
+    
     // Delete user by user ID
     int deleteUserById(Integer userId) throws Exception;
 
@@ -25,5 +26,7 @@ public interface UserDao {
 
     // Update user by email
     int updateUserByEmail(User user) throws Exception;
+
+	User searchUserByUsername(String username) throws Exception;
 	
 }
