@@ -10,6 +10,11 @@ public class MyPost {
 		
 	}
 	
+	public MyPost(List<Product> productList, List<WishItem> wishItemList) {
+		this.productList = productList;
+		this.wishItemList = wishItemList;
+	}
+
 	public List<Product> getProductList() {
 		return productList;
 	}
