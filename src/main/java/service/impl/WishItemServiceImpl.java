@@ -28,7 +28,7 @@ public class WishItemServiceImpl implements WishItemService{
             for (WishItem wishItem : wishItems) {
                 List<String> imageList = wishItemDao.getWishItemsImagesById(wishItem.getWishItemId());
                 
-                List<Register> registerUsers = wishItemDao.getRegistersUsersByUserId(wishItem.getWishUserId());
+                List<Register> registerUsers = wishItemDao.getRegistersUsersByProductId(wishItem.getWishItemId());
                 
                 WishItem detailWishItem = new WishItem(
                     wishItem.getWishItemId(),

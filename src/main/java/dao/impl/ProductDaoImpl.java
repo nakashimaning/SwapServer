@@ -34,7 +34,6 @@ public class ProductDaoImpl implements ProductDao {
 			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			
 			pstmt.setInt(1, userId);
-			System.out.println("執行 SQL: " + sql + " [userId=" + userId + "]");  // 添加日誌
 			
 			try(ResultSet rs = pstmt.executeQuery()) {
 				while(rs.next()) {
@@ -49,7 +48,6 @@ public class ProductDaoImpl implements ProductDao {
 					product.setDescription(rs.getString("description"));
 					productList.add(product);
 				}
-				System.out.println("查詢到 " + productList.size() + " 筆資料");  // 添加日誌
 				
 				return productList;
 			} catch (Exception e) {
@@ -96,16 +94,16 @@ public class ProductDaoImpl implements ProductDao {
 	@Override
 	public List<ApplicationProduct> getApplicationsByProductId(int productId) {
 		String sql = 
-		        "SELECT p.product_id, p.user_id, p.category_id, p.created_date, " +
-		        "       p.delete_date, p.title, p.status, p.description, " +
-		        "       u.profile_pic as user_avatar, " +
-		        "       pi.productimage_url " +
-		        "FROM Application a " +
-		        "JOIN Product p ON a.tobetraded_product_id = p.product_id " +
-		        "JOIN User u ON p.user_id = u.user_id " +
-		        "LEFT JOIN Productimage pi ON p.product_id = pi.product_id " +
-		        "WHERE a.tobetraded_product_id = ? " +
-		        "ORDER BY p.created_date DESC, p.product_id, pi.productimage_id";
+			    "SELECT ap.product_id as application_product_id, " +
+			    "       ap.user_id, ap.category_id, ap.created_date, " +
+			    "       ap.title, ap.status, ap.description, " +
+			    "       u.profile_pic as user_avatar, " +
+			    "       pi.productimage_url " +
+			    "FROM Application a " +
+			    "JOIN Product ap ON a.applying_product_id = ap.product_id " +
+			    "JOIN User u ON ap.user_id = u.user_id " + 
+			    "LEFT JOIN Productimage pi ON ap.product_id = pi.product_id " +
+			    "WHERE a.tobetraded_product_id = ?";
 
 		    try (
 		        Connection conn = ds.getConnection();
@@ -118,7 +116,7 @@ public class ProductDaoImpl implements ProductDao {
 		        Map<Integer, ApplicationProduct> productMap = new HashMap<>();
 		        
 		        while (rs.next()) {
-		            Integer currentProductId = rs.getInt("product_id");
+		            Integer currentProductId = rs.getInt("application_product_id");
 		            
 		            if (!productMap.containsKey(currentProductId)) {
 		                ApplicationProduct product = new ApplicationProduct();
@@ -127,7 +125,7 @@ public class ProductDaoImpl implements ProductDao {
 		                product.setUserAvatar(rs.getString("user_avatar"));
 		                product.setCategoryId(rs.getInt("category_id"));
 		                product.setCreatedDate(rs.getTimestamp("created_date"));
-		                product.setDeleteDate(rs.getTimestamp("delete_date"));
+//		                product.setDeleteDate(rs.getTimestamp("delete_date"));
 		                product.setTitle(rs.getString("title"));
 		                product.setStatus(rs.getInt("status"));
 		                product.setDescription(rs.getString("description"));
@@ -141,9 +139,7 @@ public class ProductDaoImpl implements ProductDao {
 		                productMap.get(currentProductId).getImageList().add(imageUrl);
 		            }
 		        }
-		        
 		        return new ArrayList<>(productMap.values());
-		        
 		    } catch (SQLException e) {
 		        e.printStackTrace();
 		        return null;

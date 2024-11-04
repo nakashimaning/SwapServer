@@ -7,5 +7,5 @@ import vo.WishItem;
 public interface WishItemDao {
 	List<WishItem> getWishItemsByUserId(int userId);
 	List<String> getWishItemsImagesById(int wishItemId);
-	List<Register> getRegistersUsersByUserId(int userId);
+	List<Register> getRegistersUsersByProductId(int productId);
 }

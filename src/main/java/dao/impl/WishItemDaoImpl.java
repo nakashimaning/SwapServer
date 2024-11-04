@@ -78,19 +78,20 @@ public class WishItemDaoImpl implements WishItemDao{
 	}
 
 	@Override
-	public List<Register> getRegistersUsersByUserId(int userId) {
+	public List<Register> getRegistersUsersByProductId(int productId) {
+		
 		String sql = 
-	            "SELECT u.user_id, u.username, u.profile_pic, u.email " +
-	            "FROM User u " +
-	            "JOIN Wishitem w ON u.user_id = w.wish_user_id " +
-	            "WHERE w.wish_user_id = ?";
+		        "SELECT u.user_id, u.username, u.profile_pic " +
+		        "FROM Register r " +
+		        "JOIN User u ON r.registrant_user_id = u.user_id " +
+		        "WHERE r.wishitem_id = ?";
 	        
         List<Register> registerList = new ArrayList<>();
 
         try (Connection conn = ds.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, userId);
+            pstmt.setInt(1, productId);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
