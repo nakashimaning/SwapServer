@@ -42,7 +42,13 @@ public class TransactionDaoImpl implements TransactionDao {
 
 	private static final String UPDATE_SEEKER_RATING = "UPDATE Transaction SET seeker_review = ?, seeker_star = ? WHERE transaction_id = ?";
 
-	private static final String GET_BY_ID = "SELECT * FROM Transaction WHERE transaction_id = ?";
+//	private static final String GET_BY_ID = "SELECT * FROM Transaction WHERE transaction_id = ?";
+
+	private static final String GET_BY_ID = "SELECT t.*, " + "provider_product.user_id AS provider_user_id, "
+			+ "seeker_product.user_id AS seeker_user_id " + "FROM Transaction t "
+			+ "JOIN Product provider_product ON t.provider_product_id = provider_product.product_id "
+			+ "JOIN Product seeker_product ON t.seeker_product_id = seeker_product.product_id "
+			+ "WHERE t.transaction_id = ?";
 
 	@Override
 	public List<Transaction> getGivenRatings(Integer userId) {
@@ -76,7 +82,6 @@ public class TransactionDaoImpl implements TransactionDao {
 	@Override
 	public List<Transaction> getReceivedRatings(Integer userId) {
 		List<Transaction> list = new ArrayList();
-
 
 		try (Connection conn = ds.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(GET_RECEIVED_RATINGS)) {
@@ -140,6 +145,8 @@ public class TransactionDaoImpl implements TransactionDao {
 					transaction.setSeeker_review(rs.getString("seeker_review"));
 					transaction.setProvider_star(rs.getInt("provider_star"));
 					transaction.setSeeker_star(rs.getInt("seeker_star"));
+					transaction.setProviderUserId(rs.getInt("provider_user_id"));
+					transaction.setSeekerUserId(rs.getInt("seeker_user_id"));
 					return transaction;
 				}
 			}
@@ -148,4 +155,6 @@ public class TransactionDaoImpl implements TransactionDao {
 		}
 		return null;
 	}
+	
+
 }

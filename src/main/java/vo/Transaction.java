@@ -12,7 +12,26 @@ public class Transaction {
     private String seeker_review;
     private Integer provider_star;
     private Integer seeker_star;
+    private Integer providerUserId;
+    private Integer seekerUserId;
 
+    // Getters and Setters
+    public Integer getProviderUserId() {
+        return providerUserId;
+    }
+
+    public void setProviderUserId(Integer providerUserId) {
+        this.providerUserId = providerUserId;
+    }
+
+    public Integer getSeekerUserId() {
+        return seekerUserId;
+    }
+
+    public void setSeekerUserId(Integer seekerUserId) {
+        this.seekerUserId = seekerUserId;
+    }
+    
     public Transaction() {
     }
 
@@ -101,4 +120,9 @@ public class Transaction {
 	public void setSeeker_star(Integer seeker_star) {
 		this.seeker_star = seeker_star;
 	}
+	
+	 public boolean isUserInvolved(Integer userId) {
+		    return providerUserId != null && providerUserId.equals(userId)
+		           || seekerUserId != null && seekerUserId.equals(userId);
+		}
 }
