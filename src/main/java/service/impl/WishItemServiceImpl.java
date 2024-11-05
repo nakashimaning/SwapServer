@@ -52,4 +52,39 @@ public class WishItemServiceImpl implements WishItemService{
             throw new RuntimeException("取得我的許願物品列表時發生錯誤: " + e.getMessage());
         }
 	}
+
+	@Override
+	public String updateWishItem(WishItem wishItem) {
+		Integer wishItemId = wishItem.getWishItemId();
+	    String wishItemTitle = wishItem.getWishItemTitle();
+	    Integer wishStatus = wishItem.getWishStatus();
+	    String wishDescription = wishItem.getWishDescription();
+
+	    if (wishItemId == null) {
+	        return "無此願望商品";
+	    }
+	    if (wishItemTitle == null || wishItemTitle.trim().isEmpty()) {
+	        return "願望名稱不能為空";
+	    }
+	    if (wishStatus == null) {
+	        return "必須設定願望狀態";
+	    }
+
+	    int result = wishItemDao.updateById(wishItem);
+	    
+	    return result > 0 ? null : "更新失敗";
+	}
+
+	@Override
+	public String deleteWishItem(WishItem wishItem) {
+		Integer wishItemId = wishItem.getWishItemId();
+
+	    if (wishItemId == null) {
+	        return "無此願望商品";
+	    }
+
+	    int result = wishItemDao.deleteById(wishItem);
+	    
+	    return result > 0 ? null : "刪除失敗";
+	}
 }

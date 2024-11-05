@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,5 +108,45 @@ public class WishItemDaoImpl implements WishItemDao{
             e.printStackTrace();
             throw new RuntimeException("取得登記願望用戶列表時發生錯誤: " + e.getMessage());
         }
+	}
+
+	@Override
+	public int updateById(WishItem wishItem) {
+		String sql = "update Wishitem set wishitem_name=?, description=?, wishitem_status=? where wishitem_id = ?";
+	    
+	    try (
+	        Connection conn = ds.getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	    ) {
+	        pstmt.setString(1, wishItem.getWishItemTitle());
+	        pstmt.setString(2, wishItem.getWishDescription());
+	        pstmt.setInt(3, wishItem.getWishStatus());
+	        pstmt.setInt(4, wishItem.getWishItemId());
+	        
+	        return pstmt.executeUpdate();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return -1;
+	}
+
+	@Override
+	public int deleteById(WishItem wishItem) {
+		String sql = "UPDATE Wishitem SET delete_date = ? WHERE wishitem_id = ?";
+	    
+	    try (
+	        Connection conn = ds.getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	    ) {
+	        pstmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+	        pstmt.setInt(2, wishItem.getWishItemId());
+	        
+	        return pstmt.executeUpdate();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return -1;
 	}
 }

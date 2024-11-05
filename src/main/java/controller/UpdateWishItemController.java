@@ -14,57 +14,47 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import dao.impl.ProductDaoImpl;
-import dao.impl.WishItemDaoImpl;
-import service.impl.ProductServiceImpl;
+import service.WishItemService;
 import service.impl.WishItemServiceImpl;
 import vo.MyPost;
 import vo.Product;
 import vo.WishItem;
 
-@WebServlet("/myPost/getMyPost")
-public class GetMyPostController extends HttpServlet{
+@WebServlet("/myPost/updateWishItem")
+public class UpdateWishItemController extends HttpServlet{
+
 	private static final long serialVersionUID = 1L;
 	private final static String CONTENT_TYPE = "application/json; charset=UTF-8";
 
-	private ProductServiceImpl productService;
-	private WishItemServiceImpl wishItemService;
+	private WishItemService wishItemService;
 	
 	@Override
 	public void init() throws ServletException {
 		try {
-			productService = new ProductServiceImpl();
 			wishItemService = new WishItemServiceImpl();
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
 	}
+	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
+		req.setCharacterEncoding("UTF-8");
         resp.setContentType(CONTENT_TYPE);
-		
-	    try {
-	    	Gson gson = new GsonBuilder()
+        
+        try {
+        	Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd HH:mm:ss")
                     .create();
-            JsonObject reqBody = gson.fromJson(req.getReader(), JsonObject.class);
-            
-            if (!reqBody.has("userId")) {
-                JsonObject respBody = new JsonObject();
-                respBody.addProperty("error", "未提供 userId");
-                resp.getWriter().write(respBody.toString());
-                return;
-            }
-            
-            int userId = reqBody.get("userId").getAsInt();
-            
-            List<Product> myProduct = productService.getMyProducts(userId);
-            List<WishItem> myWishItem = wishItemService.getMyWishItems(userId);
-            MyPost myPost = new MyPost(myProduct, myWishItem);
-            
-            String jsonResponse = gson.toJson(myPost);
-            resp.getWriter().write(jsonResponse);
+    		WishItem wishItem = gson.fromJson(req.getReader(), WishItem.class);
+    		
+    		String errMsg = wishItemService.updateWishItem(wishItem);
+    		
+    		JsonObject resBody = new JsonObject();
+    		resBody.addProperty("result", errMsg == null);
+    		resBody.addProperty("errMsg", errMsg);
+    		
+    		resp.getWriter().write(resBody.toString());
             
         } catch (Exception e) {
         	e.printStackTrace(); 

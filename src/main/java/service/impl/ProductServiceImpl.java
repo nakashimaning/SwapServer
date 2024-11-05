@@ -55,4 +55,39 @@ public class ProductServiceImpl implements ProductService{
             throw new RuntimeException("取得我的刊登物列表時發生錯誤: " + e.getMessage());
         }
     }
+
+	@Override
+	public String updateProduct(Product product) {
+		Integer productId = product.getProductId();
+	    String title = product.getTitle();
+	    Integer status = product.getStatus();
+	    String description = product.getDescription();
+
+	    if (productId == null) {
+	        return "無此物品";
+	    }
+	    if (title == null || title.trim().isEmpty()) {
+	        return "物品名稱不能為空";
+	    }
+	    if (status == null) {
+	        return "必須設定物品狀態";
+	    }
+
+	    int result = productDao.updateById(product);
+	    
+	    return result > 0 ? null : "更新失敗";
+	}
+
+	@Override
+	public String deleteProduct(Product product) {
+		Integer productId = product.getProductId();
+
+	    if (productId == null) {
+	        return "無此物品";
+	    }
+
+	    int result = productDao.deleteById(product);
+	    
+	    return result > 0 ? null : "刪除失敗";
+	}
 }

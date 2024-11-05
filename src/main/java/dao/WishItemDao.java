@@ -8,4 +8,6 @@ public interface WishItemDao {
 	List<WishItem> getWishItemsByUserId(int userId);
 	List<String> getWishItemsImagesById(int wishItemId);
 	List<Register> getRegistersUsersByProductId(int productId);
+	int updateById(WishItem wishItem);
+	int deleteById(WishItem wishItem);
 }

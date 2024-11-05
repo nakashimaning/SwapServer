@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -144,5 +145,45 @@ public class ProductDaoImpl implements ProductDao {
 		        e.printStackTrace();
 		        return null;
 		    }
+	}
+
+	@Override
+	public int updateById(Product product) {
+		String sql = "update Product set title=?, description=?, status=? where product_id = ?";
+	    
+	    try (
+	        Connection conn = ds.getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	    ) {
+	        pstmt.setString(1, product.getTitle());
+	        pstmt.setString(2, product.getDescription());
+	        pstmt.setInt(3, product.getStatus());
+	        pstmt.setInt(4, product.getProductId());
+	        
+	        return pstmt.executeUpdate();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return -1;
+	}
+
+	@Override
+	public int deleteById(Product product) {
+		String sql = "UPDATE Product SET delete_date = ? WHERE product_id = ?";
+	    
+	    try (
+	        Connection conn = ds.getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	    ) {
+	        pstmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+	        pstmt.setInt(2, product.getProductId());
+	        
+	        return pstmt.executeUpdate();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return -1;
 	}
 }
