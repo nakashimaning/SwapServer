@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import vo.User;
 
-@WebFilter("/*")
+@WebFilter("/transactions/*")
 public class AuthenticationFilter implements Filter {
     private static final String[] excludedUrls = {"/login", "/register", "/public"}; // Add URLs that don't require auth
 

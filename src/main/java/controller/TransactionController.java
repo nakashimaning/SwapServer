@@ -89,7 +89,7 @@ public class TransactionController extends HttpServlet {
 			    if (transaction != null) {
 //			        out.print(gson.toJson(transaction));
 			     // Verify that the logged-in user is involved in this transaction
-			        if (((Transaction) service).isUserInvolved(user.getUser_id())) {
+			        if ( service.isUserInvolved(user.getUser_id(),transaction_id)) {
 			            out.print(gson.toJson(transaction));
 			        } else {
 			            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You are not authorized to view this transaction.");

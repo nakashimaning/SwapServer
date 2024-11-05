@@ -8,7 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-
+//http://localhost:8080/Swap/login?username=user1&password=password1
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 
