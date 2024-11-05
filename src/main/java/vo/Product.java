@@ -8,7 +8,7 @@ public class Product {
 	private Integer userId;
 	private Integer categoryId;
 	private Timestamp createdDate;
-	private Timestamp deleteDate;
+	private Timestamp deleteDate; 
 	private String title;
 	private Integer status;
 	private String description;
@@ -17,15 +17,14 @@ public class Product {
 
 	public Product() {
 	}
-
-	public Product(Integer productId, Integer userId, Integer categoryId, Timestamp createdDate, Timestamp deleteDate,
+	
+	public Product(Integer productId, Integer userId, Integer categoryId, Timestamp createdDate, 
 			String title, Integer status, String description, List<String> imageList,
 			List<ApplicationProduct> applicationList) {
 		this.productId = productId;
 		this.userId = userId;
 		this.categoryId = categoryId;
 		this.createdDate = createdDate;
-		this.deleteDate = deleteDate;
 		this.title = title;
 		this.status = status;
 		this.description = description;
