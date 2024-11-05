@@ -72,7 +72,7 @@ public class MarketProductDaoImpl implements MarketProductDao {
     // 查詢指定產品的圖片列表
     private List<String> getProductImages(Integer productId) {
         List<String> imageList = new ArrayList<>();
-        String sql = "SELECT productimage_url FROM productimage WHERE product_id = ?";
+        String sql = "SELECT productimage_url FROM Productimage WHERE product_id = ?";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
