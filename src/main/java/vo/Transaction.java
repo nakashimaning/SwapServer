@@ -3,32 +3,51 @@ package vo;
 import java.sql.Timestamp;
 
 public class Transaction {
-    private Integer transaction_id;
-    private Integer provider_product_id;
-    private Integer seeker_product_id;
-    private Integer status;
-    private Timestamp transaction_date;
-    private String provider_review;
-    private String seeker_review;
-    private Integer provider_star;
-    private Integer seeker_star;
+	private Integer transaction_id;
+	private Integer provider_product_id;
+	private Integer seeker_product_id;
+	private Integer status;
+	private Timestamp transaction_date;
+	private String provider_review;
+	private String seeker_review;
+	private Integer provider_star;
+	private Integer seeker_star;
+	private Integer providerUserId = 0;
+	private Integer seekerUserId = 0;
 
-    public Transaction() {
-    }
+	// Getters and Setters
+	public Integer getProviderUserId() {
+		return providerUserId;
+	}
 
-    public Transaction(Integer transaction_id, Integer provider_product_id, Integer seeker_product_id, Integer status,
-                          Timestamp transaction_date, String provider_review, String seeker_review,
-                          Integer provider_star, Integer seeker_star) {
-        this.transaction_id = transaction_id;
-        this.provider_product_id = provider_product_id;
-        this.seeker_product_id = seeker_product_id;
-        this.status = status;
-        this.transaction_date = transaction_date;
-        this.provider_review = provider_review;
-        this.seeker_review = seeker_review;
-        this.provider_star = provider_star;
-        this.seeker_star = seeker_star;
-    }
+	public void setProviderUserId(Integer providerUserId) {
+		this.providerUserId = providerUserId;
+	}
+
+	public Integer getSeekerUserId() {
+		return seekerUserId;
+	}
+
+	public void setSeekerUserId(Integer seekerUserId) {
+		this.seekerUserId = seekerUserId;
+	}
+
+	public Transaction() {
+	}
+
+	public Transaction(Integer transaction_id, Integer provider_product_id, Integer seeker_product_id, Integer status,
+			Timestamp transaction_date, String provider_review, String seeker_review, Integer provider_star,
+			Integer seeker_star) {
+		this.transaction_id = transaction_id;
+		this.provider_product_id = provider_product_id;
+		this.seeker_product_id = seeker_product_id;
+		this.status = status;
+		this.transaction_date = transaction_date;
+		this.provider_review = provider_review;
+		this.seeker_review = seeker_review;
+		this.provider_star = provider_star;
+		this.seeker_star = seeker_star;
+	}
 
 	public Integer getTransaction_id() {
 		return transaction_id;
@@ -101,4 +120,10 @@ public class Transaction {
 	public void setSeeker_star(Integer seeker_star) {
 		this.seeker_star = seeker_star;
 	}
+
+	public boolean isUserInvolved(Integer userId) {
+		return providerUserId != null && providerUserId.equals(userId)
+				|| seekerUserId != null && seekerUserId.equals(userId);
+	}
+
 }

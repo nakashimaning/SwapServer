@@ -35,9 +35,10 @@ public class RegisterController extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String profilePic = request.getParameter("profile_pic");
-        String fcmToken = request.getParameter("FCM_token");
+//        String fcmToken = request.getParameter("FCM_token");
 
         // Initialize counts to 0
+        String fcmToken = "review_only";
         Integer asseekTotalStarCount = 0;
         Integer asproviderTotalStarCount = 0;
         Integer asseekTotalReviewCount = 0;

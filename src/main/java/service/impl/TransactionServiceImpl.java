@@ -34,4 +34,13 @@ public class TransactionServiceImpl implements TransactionService {
  public Transaction getTransactionById(Integer transactionId) {
      return dao.getTransactionById(transactionId);
  }
+
+@Override
+public boolean isUserInvolved(Integer userId, Integer transactionId) {
+	// TODO Auto-generated method stub
+	return dao.isUserInvolved(userId, transactionId);
+}
+ 
+
+
 }

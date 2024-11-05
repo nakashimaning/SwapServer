@@ -9,4 +9,5 @@ public interface TransactionService {
  List<Transaction> getReceivedRatings(Integer userId);
  boolean updateRating(Integer transactionId, String review, Integer stars, boolean isProvider);
  Transaction getTransactionById(Integer transactionId);
+boolean isUserInvolved(Integer userId, Integer transactionId);
 }
