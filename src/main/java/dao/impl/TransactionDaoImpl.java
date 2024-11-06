@@ -200,5 +200,25 @@ public class TransactionDaoImpl implements TransactionDao {
 	    return false;
 	}
 
+	@Override
+	public int addTransaction(Transaction transaction) {
+		String sql = "INSERT INTO Transaction (provider_product_id, seeker_product_id, status) VALUES (?, ?, ?)";
+	    
+	    try (
+	        Connection conn = ds.getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	    ) {
+	        pstmt.setInt(1, transaction.getProvider_product_id());
+	        pstmt.setInt(2, transaction.getSeeker_product_id());
+	        pstmt.setInt(3, 0);  // 交易狀態0: 交易中 
+	        
+	        return pstmt.executeUpdate();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return -1;
+	}
+
 
 }
