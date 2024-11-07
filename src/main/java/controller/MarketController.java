@@ -51,14 +51,25 @@ public class MarketController extends HttpServlet {
                 return;
             }
 
-            switch (paths[1]) {
-                case "product":
+            // 檢查是否為 product 路徑
+            if ("product".equals(paths[1])) {
+                // 若 paths[2] 存在且為 "detail"，則視為單一產品詳情的請求
+                if (paths.length > 2 && "detail".equals(paths[2])) {
+                    Integer productId = Integer.parseInt(req.getParameter("productId"));
+                    Integer userId = req.getParameter("userId") != null ? Integer.parseInt(req.getParameter("userId")) : null;
+
+                    MarketProduct product = marketProductService.getProductById(productId, userId);
+                    out.print(gson.toJson(product));
+                } else if (paths.length == 2) { 
+                    // 若只有 paths[1]，視為產品列表請求
                     Integer userIdGiven = Integer.parseInt(req.getParameter("userId"));
                     List<MarketProduct> products = marketProductService.getAllProduct(userIdGiven);
                     out.print(gson.toJson(products));
-                    break;
-                default:
+                } else {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                }
+            } else {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
         } catch (NumberFormatException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid number format");

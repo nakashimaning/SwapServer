@@ -6,5 +6,9 @@ import vo.Transaction;
 import java.util.List;
 
 public interface MarketProductService {
- List<MarketProduct> getAllProduct(int userId);
+    // 根據 userId 撈取多個商品的列表
+    List<MarketProduct> getAllProduct(int userId);
+    
+    // 根據 productId 查詢單一商品的方法
+    MarketProduct getProductById(int productId, Integer userId);
 }
