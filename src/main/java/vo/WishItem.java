@@ -14,6 +14,7 @@ public class WishItem {
 	private String wishDescription;
 	private List<String> wishImageList;
 	private List<User> registerList;
+    private User publisher; // Publisher info
 
 	public WishItem() {
 	}
@@ -33,6 +34,14 @@ public class WishItem {
 		this.registerList = registerList;
 	}
 
+    public User getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(User publisher) {
+        this.publisher = publisher;
+    }
+    
 	public Integer getWishItemId() {
 		return wishItemId;
 	}
