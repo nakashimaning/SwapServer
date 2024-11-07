@@ -153,10 +153,14 @@ public class MarketProductDaoImpl implements MarketProductDao {
                 product.setDescription(resultSet.getString("description"));
                 product.setImageList(getProductImages(productId));
 
-                // 檢查該會員是否收藏了該商品
+                // 檢查該會員是否收藏此商品
                 if (userId != null) {
                     List<Integer> favoriteProductList = getisFavorite(userId);
                     product.setFavorite(favoriteProductList.contains(productId));
+
+                    // 檢查該會員是否申請交換此商品
+                    List<Integer> applicationProductList = getApplicationProductIdList(userId);
+                    product.setApplicationed(applicationProductList.contains(productId));
                 }
 
                 System.out.println("Retrieved product ID: " + productId + " with images: " + product.getImageList().size());
