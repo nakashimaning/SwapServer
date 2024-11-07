@@ -40,7 +40,19 @@ public boolean isUserInvolved(Integer userId, Integer transactionId) {
 	// TODO Auto-generated method stub
 	return dao.isUserInvolved(userId, transactionId);
 }
- 
 
-
+	@Override
+	public String addTransaction(Transaction transaction) {
+		if (transaction == null) {
+            return "交易資料不能為空";
+        }
+        
+        if (transaction.getProvider_product_id() == null || 
+            transaction.getSeeker_product_id() == null) {
+            return "商品資料不完整";
+        }
+        
+        int result = dao.addTransaction(transaction);
+        return result > 0 ? null : "新增交易失敗";
+	}
 }

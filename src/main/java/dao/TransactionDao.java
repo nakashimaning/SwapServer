@@ -5,10 +5,11 @@ import vo.Transaction;
 import java.util.List;
 
 public interface TransactionDao {
-List<Transaction> getGivenRatings(Integer userId);
- List<Transaction> getReceivedRatings(Integer userId);
- boolean updateRating(Integer transactionId, String review, Integer stars, boolean isProvider);
- Transaction getTransactionById(Integer transactionId);
- public boolean isUserInvolved(Integer userId, Integer transactionId);
+	List<Transaction> getGivenRatings(Integer userId);
+	List<Transaction> getReceivedRatings(Integer userId);
+	boolean updateRating(Integer transactionId, String review, Integer stars, boolean isProvider);
+	Transaction getTransactionById(Integer transactionId);
+	public boolean isUserInvolved(Integer userId, Integer transactionId);
+	int addTransaction(Transaction transaction); 
  }
 
