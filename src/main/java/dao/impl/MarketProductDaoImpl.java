@@ -9,6 +9,7 @@ import common.ServiceLocator;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -170,4 +171,32 @@ public class MarketProductDaoImpl implements MarketProductDao {
         }
         return product;
     }
+
+    // 新增收藏方法 
+    @Override
+    public boolean addFavorite(int userId, int productId) {
+        String sql = "INSERT INTO Favorite_Product (user_id, product_id, created_date) VALUES (?, ?, NOW())";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, productId);
+            
+            int rowsAffected = statement.executeUpdate(); // 獲取影響行數
+            System.out.println("Rows affected: " + rowsAffected);
+
+            if (rowsAffected > 0) {
+                System.out.println("Favorite added successfully for userId: " + userId + ", productId: " + productId);
+                return true;
+            } else {
+                System.out.println("Favorite not added. No rows affected.");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException occurred while adding favorite.");
+            e.printStackTrace(); // 打印具體的 SQL 錯誤
+            return false;
+        }
+    }
+
+
 }

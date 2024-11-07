@@ -22,4 +22,9 @@ public class MarketProductServiceImpl implements MarketProductService {
     public MarketProduct getProductById(int productId, Integer userId) {
         return dao.getProductById(productId, userId);
     }
+    
+    @Override
+    public boolean addFavorite(int userId, int productId) {
+        return dao.addFavorite(userId, productId);
+    }
 }

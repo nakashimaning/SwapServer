@@ -12,5 +12,6 @@ public interface MarketProductDao {
     // 根據 productId 查詢單一商品的方法，包含 userId 參數
     MarketProduct getProductById(int productId, Integer userId);
     
-    // 其他方法如查找、插入、更新等可以在此定義
+    // 新增收藏方法
+    boolean addFavorite(int userId, int productId);
 }
