@@ -23,8 +23,15 @@ public class MarketProductServiceImpl implements MarketProductService {
         return dao.getProductById(productId, userId);
     }
     
+    // 新增收藏
     @Override
     public boolean addFavorite(int userId, int productId) {
         return dao.addFavorite(userId, productId);
+    }
+    
+    // 移除收藏
+    @Override
+    public boolean removeFavorite(int userId, int productId) {
+        return dao.removeFavorite(userId, productId);
     }
 }

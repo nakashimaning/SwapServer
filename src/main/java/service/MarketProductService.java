@@ -14,5 +14,8 @@ public interface MarketProductService {
 
     // 新增 addFavorite 方法
     boolean addFavorite(int userId, int productId);
+    
+    // 移除收藏
+    boolean removeFavorite(int userId, int productId);
 }
 
