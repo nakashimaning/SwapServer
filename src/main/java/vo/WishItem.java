@@ -13,18 +13,20 @@ public class WishItem {
 	private Integer wishStatus;
 	private String wishDescription;
 	private List<String> wishImageList;
-	private List<Register> registerList;
+	private List<User> registerList;
+    private User publisher; // Publisher info
 
 	public WishItem() {
 	}
 
 	public WishItem(Integer wishItemId, Integer wishUserId, Integer wishCategoryId, Timestamp wishCreatedDate,
-			String wishItemTitle, Integer wishStatus, String wishDescription,
-			List<String> wishImageList, List<Register> registerList) {
+			Timestamp wishDeleteDate, String wishItemTitle, Integer wishStatus, String wishDescription,
+			List<String> wishImageList, List<User> registerList) {
 		this.wishItemId = wishItemId;
 		this.wishUserId = wishUserId;
 		this.wishCategoryId = wishCategoryId;
 		this.wishCreatedDate = wishCreatedDate;
+		this.wishDeleteDate = wishDeleteDate;
 		this.wishItemTitle = wishItemTitle;
 		this.wishStatus = wishStatus;
 		this.wishDescription = wishDescription;
@@ -32,6 +34,14 @@ public class WishItem {
 		this.registerList = registerList;
 	}
 
+    public User getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(User publisher) {
+        this.publisher = publisher;
+    }
+    
 	public Integer getWishItemId() {
 		return wishItemId;
 	}
