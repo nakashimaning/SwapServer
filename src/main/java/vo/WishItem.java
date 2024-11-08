@@ -114,12 +114,12 @@ public class WishItem {
 		this.wishImageList = wishImageList;
 	}
 
-	public List<Register> getRegisterList() {
+	public List<User> getRegisterList() {
 		return registerList;
 	}
 
-	public void setRegisterList(List<Register> registerList) {
-		this.registerList = registerList;
+	public void setRegisterList(List<User> registrantList) {
+		this.registerList = registrantList;
 	}
 
 }
