@@ -198,5 +198,23 @@ public class MarketProductDaoImpl implements MarketProductDao {
         }
     }
 
+    // 移除收藏
+    @Override
+    public boolean removeFavorite(int userId, int productId) {
+        String sql = "DELETE FROM Favorite_Product WHERE user_id = ? AND product_id = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, productId);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 
 }

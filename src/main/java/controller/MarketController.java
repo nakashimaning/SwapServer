@@ -100,4 +100,26 @@ public class MarketController extends HttpServlet {
         }
     }
  
+    // 移除收藏
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String pathInfo = req.getPathInfo();
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+
+        if (pathInfo != null && pathInfo.equals("/product/favorite")) {
+            try {
+                Integer userId = Integer.parseInt(req.getParameter("userId"));
+                Integer productId = Integer.parseInt(req.getParameter("productId"));
+
+                boolean isRemoved = marketProductService.removeFavorite(userId, productId);
+                resp.getWriter().write("{\"success\":" + isRemoved + "}");
+            } catch (Exception e) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid request parameters");
+            }
+        } else {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid endpoint");
+        }
+    }
+
 }
