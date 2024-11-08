@@ -17,5 +17,11 @@ public interface MarketProductService {
     
     // 移除收藏
     boolean removeFavorite(int userId, int productId);
+    
+    // 查詢有無提交過申請
+    boolean hasAppliedForExchange(int userId, int productId);
+    
+    // 提出申請
+    boolean applyForExchange(int userId, int toBeTradedProductId, int applyingProductId);
 }
 
