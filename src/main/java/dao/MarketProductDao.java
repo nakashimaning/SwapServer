@@ -14,4 +14,8 @@ public interface MarketProductDao {
     
     // 新增收藏方法
     boolean addFavorite(int userId, int productId);
+    
+    // 移除收藏
+    boolean removeFavorite(int userId, int productId);
+
 }
