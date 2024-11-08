@@ -191,6 +191,22 @@ public class UserDaoImpl implements UserDao {
 				rs.getInt("asprovider_totalreviewcount"), rs.getString("FCM_token"));
 		return user;
 	}
+	
+	@Override
+	public void updateUser(User user) throws Exception {
+		String sql = "UPDATE users SET username = ?, profile_pic = ? WHERE email = ?";
+	
+        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)){
+            // 撰寫 SQL 更新邏輯
+            
+        	pstmt.setString(1, user.getUsername());
+        	pstmt.setString(2, user.getProfile_pic());
+        	pstmt.setString(3, user.getEmail());
+        	pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new Exception("Error updating user: " + e.getMessage(), e);
+        }
+	}
 
 	}
 

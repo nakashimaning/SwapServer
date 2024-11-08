@@ -29,4 +29,5 @@ public interface UserDao {
 
 	User searchUserByUsername(String username) throws Exception;
 	
+	void updateUser(User user) throws Exception;
 }
