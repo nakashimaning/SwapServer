@@ -34,4 +34,16 @@ public class MarketProductServiceImpl implements MarketProductService {
     public boolean removeFavorite(int userId, int productId) {
         return dao.removeFavorite(userId, productId);
     }
+    
+    // 查詢有無提交過申請
+    @Override
+    public boolean hasAppliedForExchange(int userId, int productId) {
+        return dao.checkApplicationStatus(userId, productId);
+    }
+
+    // 提出申請
+    @Override
+    public boolean applyForExchange(int userId, int toBeTradedProductId, int applyingProductId) {
+        return dao.addExchangeApplication(userId, toBeTradedProductId, applyingProductId);
+    }
 }
