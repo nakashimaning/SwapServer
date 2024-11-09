@@ -116,20 +116,20 @@ public class MarketProduct {
 		this.imageList = imageList;
 	}
 
-	public boolean getisFavorite() {
-		return isFavorite;
+	public boolean isFavorite() {
+	    return isFavorite;
 	}
 
 	public void setFavorite(boolean isFavorite) {
-		this.isFavorite = isFavorite;
+	    this.isFavorite = isFavorite;
 	}
 
-	public boolean getisApplicationed() {
-		return isApplicationed;
+	public boolean isApplicationed() {
+	    return isApplicationed;
 	}
 
 	public void setApplicationed(boolean isApplicationed) {
-		this.isApplicationed = isApplicationed;
+	    this.isApplicationed = isApplicationed;
 	}
 	
 }

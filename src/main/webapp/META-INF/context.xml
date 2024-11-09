@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context docBase="Book_MySQL_Web" path="/Book_MySQL_Web"
-	reloadable="true">
-	
-	<Resource name="jdbc/swapapp" 
+<Context>
+
+<Resource name="jdbc/Swap" type="javax.sql.DataSource"
+driverClassName="com.mysql.cj.jdbc.Driver"
+jdbcUrl="jdbc:mysql://swap.cometiba.me:3306/swapapp"
+username="nakashimaning"
+password="odskvrfijvsdKefKEW2837"
+factory="com.zaxxer.hikari.HikariJNDIFactory"
+dataSource.cachePrepStmts="true"
+dataSource.prepStmtCacheSize="250"
+dataSource.prepStmtCacheSqlLimit="2048"
+/>
+
+<Resource name="jdbc/swapapp" 
 		auth="Container"
 		type="javax.sql.DataSource" 
 		driverClassName="com.mysql.cj.jdbc.Driver"
@@ -12,4 +22,5 @@
 		maxTotal="20" 
 		maxIdle="10" 
 		maxWaitMillis="5000"/>
+
 </Context>
