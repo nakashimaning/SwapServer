@@ -26,7 +26,7 @@ public class WishItemDaoImpl implements WishItemDao{
 
 	@Override
 	public List<WishItem> getWishItemsByUserId(int userId) {
-		String sql = "SELECT * FROM Wishitem WHERE wish_user_id = ?";
+		String sql = "SELECT * FROM Wishitem WHERE wish_user_id = ? AND delete_date IS NULL";
         List<WishItem> wishItemList = new ArrayList<>();
 
         try (Connection conn = ds.getConnection();

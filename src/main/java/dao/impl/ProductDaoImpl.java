@@ -29,7 +29,7 @@ public class ProductDaoImpl implements ProductDao {
 	// 取得我的市集物品
 	@Override
 	public List<Product> getProductsByUserId(int userId) {
-		String sql = "SELECT * FROM Product WHERE user_id = ?";
+		String sql = "SELECT * FROM Product WHERE user_id = ? AND delete_date IS NULL";
 		List<Product> productList = new ArrayList<Product>();
 		try (Connection conn = ds.getConnection();
 			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
