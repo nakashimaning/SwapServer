@@ -2,6 +2,8 @@
 package controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import service.TransactionService;
 import service.impl.TransactionServiceImpl;
 import vo.Transaction;
@@ -20,13 +22,20 @@ import java.util.List;
 
 @WebServlet("/api/transactions/*")
 public class TransactionController extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private TransactionService service;
 	private Gson gson;
 
 	@Override
 	public void init() {
 		service = new TransactionServiceImpl();
-		gson = new Gson();
+		gson = new GsonBuilder()
+				.setLenient()
+				.serializeNulls()
+				.create();
 	}
 
 	@Override
@@ -37,11 +46,9 @@ public class TransactionController extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		
 	    // Check if the user is logged in
-	    HttpSession session = req.getSession(false); // Use false to prevent creating a new session
-	    User user = null;
-	    if (session != null) {
-	        user = (User) session.getAttribute("user");
-	    }
+		String userText = req.getHeader("user");
+//		System.out.println(userText);
+	    User user = gson.fromJson(userText, User.class); 
 	    if (user == null) {
 	        // User is not logged in; return 401 Unauthorized
 	        resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "You are not logged in.");
