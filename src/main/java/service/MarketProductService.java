@@ -23,5 +23,8 @@ public interface MarketProductService {
     
     // 提出申請
     boolean applyForExchange(int userId, int toBeTradedProductId, int applyingProductId);
+
+    // 根據 userId 撈取指定會員的所有發布商品
+    List<MarketProduct> getUserProducts(int userId);
 }
 

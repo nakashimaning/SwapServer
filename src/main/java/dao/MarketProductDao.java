@@ -23,4 +23,7 @@ public interface MarketProductDao {
     
     // 提出申請
     boolean addExchangeApplication(int userId, int toBeTradedProductId, int applyingProductId);
+
+    // 根據 userId 撈取指定會員的所有發布商品
+    List<MarketProduct> getUserProducts(int userId);
 }

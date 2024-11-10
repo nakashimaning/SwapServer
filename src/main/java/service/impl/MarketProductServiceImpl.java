@@ -46,4 +46,10 @@ public class MarketProductServiceImpl implements MarketProductService {
     public boolean applyForExchange(int userId, int toBeTradedProductId, int applyingProductId) {
         return dao.addExchangeApplication(userId, toBeTradedProductId, applyingProductId);
     }
+    
+    // 根據 userId 撈取指定會員的所有發布商品
+    @Override
+    public List<MarketProduct> getUserProducts(int userId) {
+        return dao.getUserProducts(userId);
+    }
 }

@@ -45,7 +45,12 @@ public class MarketController extends HttpServlet {
             }
 
             if ("product".equals(paths[1])) {
-                if (paths.length > 2 && "detail".equals(paths[2])) {
+                // 新增: 獲取指定會員的所有發布商品
+                if (paths.length > 2 && "userProducts".equals(paths[2])) {
+                    Integer userId = Integer.parseInt(req.getParameter("userId"));
+                    List<MarketProduct> products = marketProductService.getUserProducts(userId);
+                    out.print(gson.toJson(products));
+                } else if (paths.length > 2 && "detail".equals(paths[2])) {
                     Integer productId = Integer.parseInt(req.getParameter("productId"));
                     Integer userId = req.getParameter("userId") != null ? Integer.parseInt(req.getParameter("userId")) : null;
 
@@ -73,6 +78,7 @@ public class MarketController extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
