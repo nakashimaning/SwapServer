@@ -85,6 +85,8 @@ public class MarketController extends HttpServlet {
         String pathInfo = req.getPathInfo();
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
+        
+        System.out.println("doPost: "+pathInfo);
 
         if (pathInfo != null && pathInfo.equals("/product/favorite")) {
             try {
@@ -97,11 +99,18 @@ public class MarketController extends HttpServlet {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid request parameters");
             }
         } else if (pathInfo != null && pathInfo.equals("/product/applyForExchange")) {
+            System.out.println("applyForExchange");
+
             try {
                 Integer userId = Integer.parseInt(req.getParameter("userId"));
                 Integer toBeTradedProductId = Integer.parseInt(req.getParameter("productId"));
                 Integer applyingProductId = Integer.parseInt(req.getParameter("applyingProductId"));
 
+                System.out.println("userId:"+userId);
+                System.out.println("toBeTradedProductId:"+toBeTradedProductId);
+                System.out.println("applyingProductId:"+applyingProductId);
+
+                
                 boolean hasApplied = marketProductService.hasAppliedForExchange(userId, toBeTradedProductId);
                 if (hasApplied) {
                     resp.getWriter().write("{\"success\": false, \"message\": \"已經提出申請，無法再次申請。\"}");
@@ -111,6 +120,7 @@ public class MarketController extends HttpServlet {
                 boolean isApplied = marketProductService.applyForExchange(userId, toBeTradedProductId, applyingProductId);
                 resp.getWriter().write("{\"success\":" + isApplied + "}");
             } catch (Exception e) {
+            	System.out.println("faild because: "+e.getMessage());
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid request parameters");
             }
         } else {
