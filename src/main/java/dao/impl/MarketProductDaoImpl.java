@@ -198,5 +198,57 @@ public class MarketProductDaoImpl implements MarketProductDao {
         }
     }
 
+    // 移除收藏
+    @Override
+    public boolean removeFavorite(int userId, int productId) {
+        String sql = "DELETE FROM Favorite_Product WHERE user_id = ? AND product_id = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, productId);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // 查詢有無提交過申請
+    @Override
+    public boolean checkApplicationStatus(int userId, int productId) {
+        String sql = "SELECT COUNT(*) FROM Application WHERE user_id = ? AND tobetraded_product_id = ? AND application_status = 0";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, productId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0; // 若有資料表示已提出申請
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // 提出申請
+    @Override
+    public boolean addExchangeApplication(int userId, int toBeTradedProductId, int applyingProductId) {
+        String sql = "INSERT INTO Application (user_id, tobetraded_product_id, applying_product_id, application_date, application_status) VALUES (?, ?, ?, NOW(), 0)";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, toBeTradedProductId);
+            statement.setInt(3, applyingProductId);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
