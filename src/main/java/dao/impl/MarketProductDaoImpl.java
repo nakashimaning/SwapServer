@@ -133,13 +133,19 @@ public class MarketProductDaoImpl implements MarketProductDao {
 
     // 根據 productId 查詢單一商品的方法
     @Override
-    public MarketProduct getProductById(int productId, Integer userId) {
+    public MarketProduct getProductById(int productId, Integer currentUserId) {
         MarketProduct product = null;
-        String sql = "SELECT * FROM Product WHERE product_id = ?";
+        String sql = "SELECT Product.*, " +
+                     "       User.username AS providerName, " +
+                     "       User.profile_pic AS providerPhotoUrl " +
+                     "  FROM Product " +
+                     "  JOIN User ON User.user_id = Product.user_id " +
+                     " WHERE Product.product_id = ?";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, productId);
+
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
@@ -151,19 +157,19 @@ public class MarketProductDaoImpl implements MarketProductDao {
                 product.setDeleteDate(resultSet.getTimestamp("delete_date"));
                 product.setTitle(resultSet.getString("title"));
                 product.setStatus(resultSet.getInt("status"));
+                product.setProviderName(resultSet.getString("providerName"));
+                product.setProviderPhotoUrl(resultSet.getString("providerPhotoUrl"));
                 product.setDescription(resultSet.getString("description"));
                 product.setImageList(getProductImages(productId));
 
-                // 檢查該會員是否收藏此商品
-                if (userId != null) {
-                    List<Integer> favoriteProductList = getisFavorite(userId);
+                // 若 currentUserId 不為 null，則檢查該用戶的收藏和申請狀態
+                if (currentUserId != null) {
+                    List<Integer> favoriteProductList = getisFavorite(currentUserId);
                     product.setFavorite(favoriteProductList.contains(productId));
 
-                    // 檢查該會員是否申請交換此商品
-                    List<Integer> applicationProductList = getApplicationProductIdList(userId);
+                    List<Integer> applicationProductList = getApplicationProductIdList(currentUserId);
                     product.setApplicationed(applicationProductList.contains(productId));
                 }
-
                 System.out.println("Retrieved product ID: " + productId + " with images: " + product.getImageList().size());
             }
         } catch (Exception e) {
@@ -171,6 +177,7 @@ public class MarketProductDaoImpl implements MarketProductDao {
         }
         return product;
     }
+
 
     // 新增收藏方法 
     @Override
