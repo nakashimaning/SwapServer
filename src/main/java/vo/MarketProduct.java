@@ -16,6 +16,8 @@ public class MarketProduct {
 	private List<String> imageList;
 	private boolean isFavorite;
 	private boolean isApplicationed;
+    private String providerName; // 會員名稱
+    private String providerPhotoUrl; // 新增的會員照片 URL 欄位
 
 	public MarketProduct() {
 	}
@@ -130,6 +132,22 @@ public class MarketProduct {
 
 	public void setApplicationed(boolean isApplicationed) {
 	    this.isApplicationed = isApplicationed;
+	}
+
+	public String getProviderName() {
+		return providerName;
+	}
+
+	public void setProviderName(String providerName) {
+		this.providerName = providerName;
+	}
+
+	public String getProviderPhotoUrl() {
+		return providerPhotoUrl;
+	}
+
+	public void setProviderPhotoUrl(String providerPhotoUrl) {
+		this.providerPhotoUrl = providerPhotoUrl;
 	}
 	
 }
