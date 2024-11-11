@@ -1,11 +1,7 @@
 
 //src/main/java/dao/impl/TransactionDAOImpl.java
 package dao.impl;
-
 import vo.Transaction;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import common.ServiceLocator;
@@ -71,7 +67,7 @@ public class TransactionDaoImpl implements TransactionDao {
 
 	@Override
 	public List<Transaction> getGivenRatings(Integer userId) {
-		List<Transaction> list = new ArrayList();
+		List<Transaction> list = new ArrayList<Transaction>();
 		try (Connection conn = ds.getConnection(); PreparedStatement pstmt = conn.prepareStatement(GET_GIVEN_RATINGS)) {
 
 			pstmt.setInt(1, userId);
@@ -100,7 +96,7 @@ public class TransactionDaoImpl implements TransactionDao {
 
 	@Override
 	public List<Transaction> getReceivedRatings(Integer userId) {
-		List<Transaction> list = new ArrayList();
+		List<Transaction> list = new ArrayList<Transaction>();
 
 		try (Connection conn = ds.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(GET_RECEIVED_RATINGS)) {

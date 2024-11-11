@@ -10,7 +10,12 @@ import java.io.IOException;
 @WebServlet("/userInfo")
 public class GetUserInfoController extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Retrieve user info from session
         HttpSession session = request.getSession(false); // Do not create a new session
         if (session == null) {
