@@ -40,4 +40,6 @@ public class FavoriteWish {
     public void setCreated_date(Timestamp created_date) {
         this.created_date = created_date;
     }
+
+
 }

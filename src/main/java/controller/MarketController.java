@@ -100,6 +100,11 @@ public class MarketController extends HttpServlet {
 
                     MarketProduct product = marketProductService.getProductById(productId, currentUserId);
                     out.print(gson.toJson(product));
+                } else if (paths.length == 2) { 
+                    // 若只有 paths[1]，視為產品列表請求
+                    Integer userIdGiven = Integer.parseInt(req.getParameter("userId"));
+                    List<MarketProduct> products = marketProductService.getAllProduct(userIdGiven);
+                    out.print(gson.toJson(products));
                 } else {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid product sub-path");
                 }
@@ -115,7 +120,7 @@ public class MarketController extends HttpServlet {
         }
     }
 
-
+	
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
