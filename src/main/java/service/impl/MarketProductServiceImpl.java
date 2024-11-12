@@ -14,9 +14,14 @@ public class MarketProductServiceImpl implements MarketProductService {
 	}
 
 	@Override
-	public List<MarketProduct> getAllProducts(int userId) {
-		return dao.getAllProducts(userId);
+	public List<MarketProduct> getAllProducts(Integer userId) {
+	    return dao.getAllProducts(userId);
 	}
+
+//	@Override
+//	public List<MarketProduct> getAllProducts(int userId) {
+//		return dao.getAllProducts(userId);
+//	}
 
 	@Override
 	public MarketProduct getProductById(int productId, Integer userId) {
