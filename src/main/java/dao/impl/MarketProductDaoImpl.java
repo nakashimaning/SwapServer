@@ -22,23 +22,25 @@ public class MarketProductDaoImpl implements MarketProductDao {
 
     // 根據 userId 撈取多個商品的列表
     @Override
-    public List<MarketProduct> getAllProducts(int userId) {
+    public List<MarketProduct> getAllProducts(Integer userId) {
         List<MarketProduct> products = new ArrayList<>();
-        String sql = "SELECT * FROM Product WHERE status = 0 AND user_id <> ?";
+        String sql;
+        if (userId == null) {
+            // 無 userId，取出所有上架中商品
+            sql = "SELECT * FROM Product WHERE status = 0";
+        } else {
+            // 有 userId，取出所有上架中且非該使用者的商品
+            sql = "SELECT * FROM Product WHERE status = 0 AND user_id <> ?";
+        }
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, userId);
+
+            if (userId != null) {
+                statement.setInt(1, userId);
+            }
+            
             ResultSet resultSet = statement.executeQuery();
-
-            // 查詢user_id會員已申請的列表並轉換為 applicationList
-            List<Integer> applicationProductList = getApplicationProductIdList(userId);
-            System.out.println("Application product list size: " + applicationProductList.size());
-
-            // 查詢user_id的收藏列表
-            List<Integer> favoriteProductList = getisFavorite(userId);
-            System.out.println("Favorite product list size: " + favoriteProductList.size());
-
             while (resultSet.next()) {
                 MarketProduct product = new MarketProduct();
                 product.setProductId(resultSet.getInt("product_id"));
@@ -49,29 +51,67 @@ public class MarketProductDaoImpl implements MarketProductDao {
                 product.setTitle(resultSet.getString("title"));
                 product.setStatus(resultSet.getInt("status"));
                 product.setDescription(resultSet.getString("description"));
-
-                System.out.println("Processing product ID: " + product.getProductId());
-
-                // 獲取圖片列表並設置圖片
-                List<String> imageList = getProductImages(product.getProductId());
-                product.setImageList(imageList);
-
-                System.out.println("Image list size for product ID " + product.getProductId() + ": " + imageList.size());
-
-                // 設置申請和收藏狀態，檢查是否包含在相應列表中
-                product.setApplicationed(applicationProductList.contains(product.getProductId()));
-                product.setFavorite(favoriteProductList.contains(product.getProductId()));
-
-                System.out.println("Product " + product.getProductId() + " - isApplicationed: " + product.isApplicationed() + ", isFavorite: " + product.isFavorite());
+                product.setImageList(getProductImages(product.getProductId()));
 
                 products.add(product);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return products;
     }
+
+//    @Override
+//    public List<MarketProduct> getAllProducts(int userId) {
+//        List<MarketProduct> products = new ArrayList<>();
+//        String sql = "SELECT * FROM Product WHERE status = 0 AND user_id <> ?";
+//
+//        try (Connection connection = dataSource.getConnection();
+//             PreparedStatement statement = connection.prepareStatement(sql)) {
+//            statement.setInt(1, userId);
+//            ResultSet resultSet = statement.executeQuery();
+//
+//            // 查詢user_id會員已申請的列表並轉換為 applicationList
+//            List<Integer> applicationProductList = getApplicationProductIdList(userId);
+//            System.out.println("Application product list size: " + applicationProductList.size());
+//
+//            // 查詢user_id的收藏列表
+//            List<Integer> favoriteProductList = getisFavorite(userId);
+//            System.out.println("Favorite product list size: " + favoriteProductList.size());
+//
+//            while (resultSet.next()) {
+//                MarketProduct product = new MarketProduct();
+//                product.setProductId(resultSet.getInt("product_id"));
+//                product.setUserId(resultSet.getInt("user_id"));
+//                product.setCategoryId(resultSet.getInt("category_id"));
+//                product.setCreatedDate(resultSet.getTimestamp("created_date"));
+//                product.setDeleteDate(resultSet.getTimestamp("delete_date"));
+//                product.setTitle(resultSet.getString("title"));
+//                product.setStatus(resultSet.getInt("status"));
+//                product.setDescription(resultSet.getString("description"));
+//
+//                System.out.println("Processing product ID: " + product.getProductId());
+//
+//                // 獲取圖片列表並設置圖片
+//                List<String> imageList = getProductImages(product.getProductId());
+//                product.setImageList(imageList);
+//
+//                System.out.println("Image list size for product ID " + product.getProductId() + ": " + imageList.size());
+//
+//                // 設置申請和收藏狀態，檢查是否包含在相應列表中
+//                product.setApplicationed(applicationProductList.contains(product.getProductId()));
+//                product.setFavorite(favoriteProductList.contains(product.getProductId()));
+//
+//                System.out.println("Product " + product.getProductId() + " - isApplicationed: " + product.isApplicationed() + ", isFavorite: " + product.isFavorite());
+//
+//                products.add(product);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return products;
+//    }
 
     // 查詢指定產品的圖片列表
     private List<String> getProductImages(Integer productId) {

@@ -70,8 +70,6 @@ public class ProductNewPostDaoImpl implements ProductNewPostDao {
         }
     }
 
-
-
     private void addProductImages(int productId, List<String> imageList) {
         String sql = "INSERT INTO Productimage (product_id, productimage_url) VALUES (?, ?)";
         try (Connection connection = dataSource.getConnection();
