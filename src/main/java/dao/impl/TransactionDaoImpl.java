@@ -24,15 +24,65 @@ public class TransactionDaoImpl implements TransactionDao {
 		}
 	}
 
-	private static final String GET_GIVEN_RATINGS = "SELECT t.* FROM Transaction t "
-			+ "JOIN Product p1 ON t.provider_product_id = p1.product_id "
-			+ "JOIN Product p2 ON t.seeker_product_id = p2.product_id " + "WHERE (p1.user_id = ? OR p2.user_id = ?) "
-			+ "AND t.status = 0 ORDER BY t.transaction_date DESC";
+	private static final String GET_GIVEN_RATINGS = 
+		    "SELECT t.*, " +
+		    	    "       p1.user_id as provider_user_id, " +
+		    	    "       u1.username as provider_username, " +
+		    	    "       u1.profile_pic as provider_profile_pic, " +
+		    	    "       p2.user_id as seeker_user_id, " +
+		    	    "       u2.username as seeker_username, " +
+		    	    "       u2.profile_pic as seeker_profile_pic " +
+		    	    "FROM Transaction t " +
+		    	    "JOIN Product p1 ON t.provider_product_id = p1.product_id " +
+		    	    "JOIN Product p2 ON t.seeker_product_id = p2.product_id " +
+		    	    "JOIN User u1 ON p1.user_id = u1.user_id " +
+		    	    "JOIN User u2 ON p2.user_id = u2.user_id " +
+		    	    "WHERE ( p2.user_id = ?) " +
+		    	    "AND t.status = 0 " +
+		    	    "ORDER BY t.transaction_date DESC";
+	
+//    "SELECT t.*, " +
+//    "       p1.user_id as provider_user_id, " +
+//    "       u1.username as provider_username, " +
+//    "       u1.profile_pic as provider_profile_pic, " +
+//    "       p2.user_id as seeker_user_id, " +
+//    "       u2.username as seeker_username, " +
+//    "       u2.profile_pic as seeker_profile_pic " +
+//    "FROM Transaction t " +
+//    "JOIN Product p1 ON t.provider_product_id = p1.product_id " +
+//    "JOIN Product p2 ON t.seeker_product_id = p2.product_id " +
+//    "JOIN User u1 ON p1.user_id = u1.user_id " +
+//    "JOIN User u2 ON p2.user_id = u2.user_id " +
+//    "WHERE (p1.user_id = ? OR p2.user_id = ?) " +
+//    "AND t.status = 0 " +
+//    "ORDER BY t.transaction_date DESC";
+	
+//	private static final String GET_GIVEN_RATINGS = "SELECT t.* FROM Transaction t "
+//			+ "JOIN Product p1 ON t.provider_product_id = p1.product_id "
+//			+ "JOIN Product p2 ON t.seeker_product_id = p2.product_id " + "WHERE (p1.user_id = ? OR p2.user_id = ?) "
+//			+ "AND t.status = 0 ORDER BY t.transaction_date DESC";
 
-	private static final String GET_RECEIVED_RATINGS = "SELECT t.* FROM Transaction t "
-			+ "JOIN Product p1 ON t.provider_product_id = p1.product_id "
-			+ "JOIN Product p2 ON t.seeker_product_id = p2.product_id " + "WHERE (p1.user_id = ? OR p2.user_id = ?) "
-			+ "AND t.status = 0 ORDER BY t.transaction_date DESC";
+	private static final String GET_RECEIVED_RATINGS =
+		    "SELECT t.*, " +
+		    	    "       p1.user_id as provider_user_id, " +
+		    	    "       u1.username as provider_username, " +
+		    	    "       u1.profile_pic as provider_profile_pic, " +
+		    	    "       p2.user_id as seeker_user_id, " +
+		    	    "       u2.username as seeker_username, " +
+		    	    "       u2.profile_pic as seeker_profile_pic " +
+		    	    "FROM Transaction t " +
+		    	    "JOIN Product p1 ON t.provider_product_id = p1.product_id " +
+		    	    "JOIN Product p2 ON t.seeker_product_id = p2.product_id " +
+		    	    "JOIN User u1 ON p1.user_id = u1.user_id " +
+		    	    "JOIN User u2 ON p2.user_id = u2.user_id " +
+		    	    "WHERE (p1.user_id = ? ) " +
+		    	    "AND t.status = 0 " +
+		    	    "ORDER BY t.transaction_date DESC";
+	
+//	private static final String GET_RECEIVED_RATINGS = "SELECT t.* FROM Transaction t "
+//			+ "JOIN Product p1 ON t.provider_product_id = p1.product_id "
+//			+ "JOIN Product p2 ON t.seeker_product_id = p2.product_id " + "WHERE (p1.user_id = ? OR p2.user_id = ?) "
+//			+ "AND t.status = 0 ORDER BY t.transaction_date DESC";
 
 	private static final String UPDATE_PROVIDER_RATING = "UPDATE Transaction SET provider_review = ?, provider_star = ? WHERE transaction_id = ?";
 
@@ -71,20 +121,40 @@ public class TransactionDaoImpl implements TransactionDao {
 		try (Connection conn = ds.getConnection(); PreparedStatement pstmt = conn.prepareStatement(GET_GIVEN_RATINGS)) {
 
 			pstmt.setInt(1, userId);
-			pstmt.setInt(2, userId);
+//			pstmt.setInt(2, userId);
 
 			try (ResultSet rs = pstmt.executeQuery()) {
 				while (rs.next()) {
 					Transaction transaction = new Transaction();
-					transaction.setTransaction_id(rs.getInt("transaction_id"));
-					transaction.setProvider_product_id(rs.getInt("provider_product_id"));
-					transaction.setSeeker_product_id(rs.getInt("seeker_product_id"));
-					transaction.setStatus(rs.getInt("status"));
-					transaction.setTransaction_date(rs.getTimestamp("transaction_date"));
-					transaction.setProvider_review(rs.getString("provider_review"));
-					transaction.setSeeker_review(rs.getString("seeker_review"));
-					transaction.setProvider_star(rs.getInt("provider_star"));
-					transaction.setSeeker_star(rs.getInt("seeker_star"));
+					// Set basic transaction info
+	                transaction.setTransaction_id(rs.getInt("transaction_id"));
+	                transaction.setProvider_product_id(rs.getInt("provider_product_id"));
+	                transaction.setSeeker_product_id(rs.getInt("seeker_product_id"));
+	                transaction.setStatus(rs.getInt("status"));
+	                transaction.setTransaction_date(rs.getTimestamp("transaction_date"));
+	                transaction.setProvider_review(rs.getString("provider_review"));
+	                transaction.setSeeker_review(rs.getString("seeker_review"));
+	                transaction.setProvider_star(rs.getInt("provider_star"));
+	                transaction.setSeeker_star(rs.getInt("seeker_star"));
+	                
+	                // Set provider info
+	                transaction.setProviderUserId(rs.getInt("provider_user_id"));
+	                transaction.setProviderUsername(rs.getString("provider_username"));
+	                transaction.setProviderprofilepic(rs.getString("provider_profile_pic"));
+	                
+	                // Set seeker info
+	                transaction.setSeekerUserId(rs.getInt("seeker_user_id"));
+	                transaction.setSeekerUsername(rs.getString("seeker_username"));
+	                transaction.setSeekerprofilepic(rs.getString("seeker_profile_pic"));
+//					transaction.setTransaction_id(rs.getInt("transaction_id"));
+//					transaction.setProvider_product_id(rs.getInt("provider_product_id"));
+//					transaction.setSeeker_product_id(rs.getInt("seeker_product_id"));
+//					transaction.setStatus(rs.getInt("status"));
+//					transaction.setTransaction_date(rs.getTimestamp("transaction_date"));
+//					transaction.setProvider_review(rs.getString("provider_review"));
+//					transaction.setSeeker_review(rs.getString("seeker_review"));
+//					transaction.setProvider_star(rs.getInt("provider_star"));
+//					transaction.setSeeker_star(rs.getInt("seeker_star"));
 					list.add(transaction);
 				}
 			}
@@ -101,19 +171,39 @@ public class TransactionDaoImpl implements TransactionDao {
 		try (Connection conn = ds.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(GET_RECEIVED_RATINGS)) {
 			pstmt.setInt(1, userId);
-			pstmt.setInt(2, userId);
+//			pstmt.setInt(2, userId);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				while (rs.next()) {
 					Transaction transaction = new Transaction();
-					transaction.setTransaction_id(rs.getInt("transaction_id"));
-					transaction.setProvider_product_id(rs.getInt("provider_product_id"));
-					transaction.setSeeker_product_id(rs.getInt("seeker_product_id"));
-					transaction.setStatus(rs.getInt("status"));
-					transaction.setTransaction_date(rs.getTimestamp("transaction_date"));
-					transaction.setProvider_review(rs.getString("provider_review"));
-					transaction.setSeeker_review(rs.getString("seeker_review"));
-					transaction.setProvider_star(rs.getInt("provider_star"));
-					transaction.setSeeker_star(rs.getInt("seeker_star"));
+					// Set basic transaction info
+	                transaction.setTransaction_id(rs.getInt("transaction_id"));
+	                transaction.setProvider_product_id(rs.getInt("provider_product_id"));
+	                transaction.setSeeker_product_id(rs.getInt("seeker_product_id"));
+	                transaction.setStatus(rs.getInt("status"));
+	                transaction.setTransaction_date(rs.getTimestamp("transaction_date"));
+	                transaction.setProvider_review(rs.getString("provider_review"));
+	                transaction.setSeeker_review(rs.getString("seeker_review"));
+	                transaction.setProvider_star(rs.getInt("provider_star"));
+	                transaction.setSeeker_star(rs.getInt("seeker_star"));
+	                
+	                // Set provider info
+	                transaction.setProviderUserId(rs.getInt("provider_user_id"));
+	                transaction.setProviderUsername(rs.getString("provider_username"));
+	                transaction.setProviderprofilepic(rs.getString("provider_profile_pic"));
+	                
+	                // Set seeker info
+	                transaction.setSeekerUserId(rs.getInt("seeker_user_id"));
+	                transaction.setSeekerUsername(rs.getString("seeker_username"));
+	                transaction.setSeekerprofilepic(rs.getString("seeker_profile_pic"));
+//					transaction.setTransaction_id(rs.getInt("transaction_id"));
+//					transaction.setProvider_product_id(rs.getInt("provider_product_id"));
+//					transaction.setSeeker_product_id(rs.getInt("seeker_product_id"));
+//					transaction.setStatus(rs.getInt("status"));
+//					transaction.setTransaction_date(rs.getTimestamp("transaction_date"));
+//					transaction.setProvider_review(rs.getString("provider_review"));
+//					transaction.setSeeker_review(rs.getString("seeker_review"));
+//					transaction.setProvider_star(rs.getInt("provider_star"));
+//					transaction.setSeeker_star(rs.getInt("seeker_star"));
 					list.add(transaction);
 				}
 			} catch (SQLException e) {
