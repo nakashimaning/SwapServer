@@ -13,8 +13,11 @@ public class Transaction {
 	private Integer provider_star;
 	private Integer seeker_star;
 	private Integer providerUserId = 0;
+	private String providerUsername = "";
+	private String providerprofilepic = "";
 	private Integer seekerUserId = 0;
-
+	private String seekerUsername = "";
+	private String seekerprofilepic = "";
 	// Getters and Setters
 	public Integer getProviderUserId() {
 		return providerUserId;
@@ -124,6 +127,38 @@ public class Transaction {
 	public boolean isUserInvolved(Integer userId) {
 		return providerUserId != null && providerUserId.equals(userId)
 				|| seekerUserId != null && seekerUserId.equals(userId);
+	}
+
+	public String getProviderUsername() {
+		return providerUsername;
+	}
+
+	public void setProviderUsername(String providerUsername) {
+		this.providerUsername = providerUsername;
+	}
+
+	public String getProviderprofilepic() {
+		return providerprofilepic;
+	}
+
+	public void setProviderprofilepic(String providerprofilepic) {
+		this.providerprofilepic = providerprofilepic;
+	}
+
+	public String getSeekerprofilepic() {
+		return seekerprofilepic;
+	}
+
+	public void setSeekerprofilepic(String seekerprofilepic) {
+		this.seekerprofilepic = seekerprofilepic;
+	}
+
+	public String getSeekerUsername() {
+		return seekerUsername;
+	}
+
+	public void setSeekerUsername(String seekerUsername) {
+		this.seekerUsername = seekerUsername;
 	}
 
 }

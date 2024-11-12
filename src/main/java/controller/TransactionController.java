@@ -70,7 +70,7 @@ public class TransactionController extends HttpServlet {
 			switch (paths[1]) {
 			case "given":
 //				Integer userIdGiven = Integer.parseInt(req.getParameter("userId"));
-		        Integer userIdGiven = user.getUser_id(); // Get userId from session
+		        Integer userIdGiven = user.getUser_id(); 
 
 				List<Transaction> givenRatings = service.getGivenRatings(userIdGiven);
 				out.print(gson.toJson(givenRatings));
@@ -78,8 +78,7 @@ public class TransactionController extends HttpServlet {
 
 			case "received":
 //				Integer userIdReceived = Integer.parseInt(req.getParameter("userId"));
-		        Integer userIdReceived = user.getUser_id(); // Get userId from session
-
+		        Integer userIdReceived = user.getUser_id(); 
 				List<Transaction> receivedRatings = service.getReceivedRatings(userIdReceived);
 				out.print(gson.toJson(receivedRatings));
 				break;
