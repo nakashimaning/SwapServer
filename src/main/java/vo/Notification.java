@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 public class Notification {
 	private Integer notification_id;
+	private Integer user_id;
 	private Integer type;
 	private String message;
 	private Timestamp created_date;
@@ -12,8 +13,9 @@ public class Notification {
 	public Notification() {
 	}
 	
-	public Notification(Integer notification_id, Integer type, String message, Timestamp created_date, Boolean is_read) {
+	public Notification(Integer notification_id, Integer user_id, Integer type, String message, Timestamp created_date, Boolean is_read) {
 		this.notification_id = notification_id;
+		this.user_id = user_id;
 		this.type = type;
 		this.message = message;
 		this.created_date = created_date;
@@ -58,5 +60,13 @@ public class Notification {
 
 	public void setIs_read(Boolean is_read) {
 		this.is_read = is_read;
+	}
+
+	public Integer getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(Integer user_id) {
+		this.user_id = user_id;
 	}
 }

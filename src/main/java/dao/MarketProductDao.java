@@ -14,4 +14,16 @@ public interface MarketProductDao {
     
     // 新增收藏方法
     boolean addFavorite(int userId, int productId);
+    
+    // 移除收藏
+    boolean removeFavorite(int userId, int productId);
+
+    // 查詢有無提交過申請
+    boolean checkApplicationStatus(int userId, int productId);
+    
+    // 提出申請
+    boolean addExchangeApplication(int userId, int toBeTradedProductId, int applyingProductId);
+
+    // 根據 userId 撈取指定會員的所有發布商品
+    List<MarketProduct> getUserProducts(int userId);
 }

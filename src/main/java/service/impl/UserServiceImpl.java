@@ -1,6 +1,9 @@
 package service.impl;
 
 import service.UserService;
+
+import java.sql.SQLException;
+
 import dao.UserDao;
 import dao.impl.UserDaoImpl;
 import vo.User;
@@ -17,7 +20,8 @@ public class UserServiceImpl implements UserService {
 
     // Register a new user
     @Override
-    public void register(User user) throws Exception {
+    // 0 OK 1 BOOM
+    public Integer register(User user) throws Exception {
         try {
             // Check if user with same email or username already exists
             User existingUserByEmail = userDAO.searchUserByEmail(user.getEmail());
@@ -29,8 +33,11 @@ public class UserServiceImpl implements UserService {
                 throw new Exception("Username is already taken.");
             }
             userDAO.addUser(user);
+            return 0;
         } catch (Exception e) {
-            throw new Exception("Registration failed: " + e.getMessage(), e);
+
+//            throw new Exception("Registration failed: " + e.getMessage(), e);
+        	return 1;
         }
     }
 
@@ -66,6 +73,35 @@ public class UserServiceImpl implements UserService {
             return user;
         } catch (Exception e) {
             throw new Exception("Failed to get user info: " + e.getMessage(), e);
+        }
+    }
+    
+    @Override
+    public User getUserprofile(String email) throws Exception{
+    	try {
+            User user = userDAO.searchUserByEmail(email);
+            return user;
+        } catch (Exception e) {
+            throw new Exception("Error getting user profile: " + e.getMessage(), e);
+        }
+    }
+    
+    @Override
+    public User updateUserProfile(String email, String username, String profile_pic) throws Exception {
+        try {
+            // 查詢使用者資訊
+            User user = userDAO.searchUserByEmail(email);
+
+            if (user == null) {
+                throw new Exception("User not found for email: " + email);
+            }
+            user.setUsername(username);
+            user.setProfile_pic(profile_pic);
+            userDAO.updateUserByEmail(user);  // 更新使用者資訊
+            return user;  // 返回更新後的 User 物件
+            
+        } catch (Exception e) {
+            throw new Exception("Error updating user profile: " + e.getMessage(), e);
         }
     }
 

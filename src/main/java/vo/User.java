@@ -26,6 +26,8 @@ public class User {
 		this.asprovider_totalreviewcount = asprovider_totalreviewcount;
 
 	}
+	
+	public User() {}
 
 	public Integer getUser_id() {
 		return user_id;
