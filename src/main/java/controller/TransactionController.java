@@ -83,6 +83,31 @@ public class TransactionController extends HttpServlet {
 				out.print(gson.toJson(receivedRatings));
 				break;
 				//http://localhost:8080/Swap/api/transactions/transaction?transaction_id=1
+			case "user":
+//			    String transactionIdParam = req.getParameter("userid");
+		        Integer userIdtransaction = user.getUser_id(); 
+
+			    if (userIdtransaction == null) {
+			        resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "User ID is required. Please log in to continue");
+
+			        return;
+			    }
+//			    Integer user_id = Integer.parseInt(userIdtransaction);
+			    List<Transaction> transaction_userid = service.getTransactionByUserId(userIdtransaction);
+			    if (transaction_userid != null) {
+//			        out.print(gson.toJson(transaction));
+			     // Verify that the logged-in user is involved in this transaction
+			        if ( user.getUser_id()==userIdtransaction) {
+			            out.print(gson.toJson(transaction_userid));
+			        } else {
+			            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You are not authorized to view this transaction.");
+			        }
+			        
+			    } else {
+			        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+			    }
+			    break;
+			
 			case "transaction":
 			    String transactionIdParam = req.getParameter("transaction_id");
 			    if (transactionIdParam == null) {

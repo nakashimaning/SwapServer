@@ -10,6 +10,7 @@ public interface TransactionDao {
 	boolean updateRating(Integer transactionId, String review, Integer stars, boolean isProvider);
 	Transaction getTransactionById(Integer transactionId);
 	public boolean isUserInvolved(Integer userId, Integer transactionId);
-	int addTransaction(Transaction transaction); 
+	int addTransaction(Transaction transaction);
+	List<Transaction> gettransactiobyuserid(Integer userId); 
  }
 

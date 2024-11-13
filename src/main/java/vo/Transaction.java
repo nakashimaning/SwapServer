@@ -18,6 +18,8 @@ public class Transaction {
 	private Integer seekerUserId = 0;
 	private String seekerUsername = "";
 	private String seekerprofilepic = "";
+	private String providerproductimageurls;
+	private String seekerproductimageurls;
 	// Getters and Setters
 	public Integer getProviderUserId() {
 		return providerUserId;
@@ -159,6 +161,29 @@ public class Transaction {
 
 	public void setSeekerUsername(String seekerUsername) {
 		this.seekerUsername = seekerUsername;
+	}
+
+	public void setProviderProductImageUrls(String providerProductImageUrls) {
+		this.providerproductimageurls = providerProductImageUrls;
+		
+	}
+
+	public void setSeekerProductImageUrls(String seekerProductImageUrls) {
+
+		this.seekerproductimageurls = seekerProductImageUrls;
+	}
+
+	public String getProviderproductimageurls() {
+		return providerproductimageurls;
+	}
+
+	public void setProviderproductimageurls(String providerproductimageurls) {
+		this.providerproductimageurls = providerproductimageurls;
+	}
+	
+
+	public String getSeekerproductimageurls() {
+		return seekerproductimageurls;
 	}
 
 }

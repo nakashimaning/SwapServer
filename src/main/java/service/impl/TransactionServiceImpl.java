@@ -31,6 +31,12 @@ public class TransactionServiceImpl implements TransactionService {
  }
 
  @Override
+ public List<Transaction> getTransactionByUserId(Integer userid) {
+     return dao.gettransactiobyuserid(userid);
+ }
+
+ 
+ @Override
  public Transaction getTransactionById(Integer transactionId) {
      return dao.getTransactionById(transactionId);
  }

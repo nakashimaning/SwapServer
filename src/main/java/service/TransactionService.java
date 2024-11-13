@@ -11,4 +11,5 @@ public interface TransactionService {
 	Transaction getTransactionById(Integer transactionId);
 	boolean isUserInvolved(Integer userId, Integer transactionId);
 	String addTransaction(Transaction transaction);
+	List<Transaction> getTransactionByUserId(Integer userid);
 }
