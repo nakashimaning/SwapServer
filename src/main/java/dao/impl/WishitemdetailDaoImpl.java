@@ -60,7 +60,7 @@ public class WishitemdetailDaoImpl implements WishitemdetailDao {
             }
         }
         
-        sql = "SELECT r.registrant_user_id, u.username " +
+        sql = "SELECT r.registrant_user_id, u.username, u.profile_pic " +
               "FROM Register r " +
               "JOIN User u ON r.registrant_user_id = u.user_id " +
               "WHERE r.wishitem_id = ?";
@@ -75,11 +75,16 @@ public class WishitemdetailDaoImpl implements WishitemdetailDao {
                     User registrant = new User();
                     registrant.setUser_id(rs.getInt("registrant_user_id"));
                     registrant.setUsername(rs.getString("username"));
+                    registrant.setProfile_pic(rs.getString("profile_pic"));
                     registrantList.add(registrant);
                 }
                 wishItemDetail.setRegisterList(registrantList);
             }
         }
+
+        // 獲取圖片列表
+        List<String> imageList = getWishItemImages(wishitem_id);
+        wishItemDetail.setWishImageList(imageList);
         
         return wishItemDetail;
     }
@@ -150,5 +155,24 @@ public class WishitemdetailDaoImpl implements WishitemdetailDao {
         } catch (Exception e) {
             throw new Exception("Error adding registration", e);
         }
+    }
+
+    // 查詢指定 wishItem 的圖片列表
+    private List<String> getWishItemImages(Integer wishItemId) {
+        List<String> imageList = new ArrayList<>();
+        String sql = "SELECT wishitemimage_url FROM Wishitemimage WHERE wishitem_id = ?";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, wishItemId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                imageList.add(resultSet.getString("wishitemimage_url"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return imageList;
     }
 }

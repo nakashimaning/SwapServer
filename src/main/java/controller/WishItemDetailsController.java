@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 
-@WebServlet("/api/wishitemDetails")
+@WebServlet("/api/wishItemDetails")
 public class WishItemDetailsController extends HttpServlet {
 
     private WishItemdetailService wishItemService;
@@ -25,6 +25,7 @@ public class WishItemDetailsController extends HttpServlet {
             throw new RuntimeException("Initialization failed", e);
         }
     }
+    
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
